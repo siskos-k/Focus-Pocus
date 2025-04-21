@@ -18,16 +18,14 @@ export default function Home() {
           Welcome to Focus Pocus
         </h1>
         <p className="text-lg sm:text-xl max-w-3xl text-[#424242] dark:text-[#cfd8dc]">
-          Focus Pocus is your personalized tool for understanding and improving focus. 
-          Using a custom AI-powered quiz, we help estimate whether you may have ADHD 
-          and provide tailored insights through an interactive experience with our custom LLM.
+          Focus Pocus is your personalized tool for understanding and improving focus.
         </p>
 
         {/* Call-to-action buttons */}
         <div className="flex flex-wrap justify-center gap-4">
           <a
             className="rounded-full bg-[#21a0ac] text-white px-6 py-3 text-lg font-medium shadow-md hover:bg-[#004d40] transition-transform transform hover:scale-105"
-            href="/get-started"
+            href="/quiz" // Updated to navigate to the quiz page
           >
             Get Started
           </a>
@@ -36,6 +34,12 @@ export default function Home() {
             href="/learn-more"
           >
             Learn More
+          </a>
+          <a
+            className="rounded-full bg-[#21a0ac] text-white px-6 py-3 text-lg font-medium shadow-md hover:bg-[#004d40] transition-transform transform hover:scale-105"
+            href="/homepage"
+          >
+            Explore Features
           </a>
         </div>
       </main>
@@ -47,36 +51,18 @@ export default function Home() {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
           <div className="flex flex-col items-center gap-4">
-            {/* <Image
-              src="/assets/focus_icon.png"
-              alt="Focus Icon"
-              width={80}
-              height={80}
-            /> */}
             <h3 className="text-xl font-semibold">ADHD Estimation</h3>
             <p className="text-sm text-[#424242] dark:text-[#cfd8dc]">
               Take our AI-powered quiz to estimate whether you may have ADHD and gain valuable insights.
             </p>
           </div>
           <div className="flex flex-col items-center gap-4">
-            {/* <Image
-              src="/assets/organize_icon.png"
-              alt="Organize Icon"
-              width={80}
-              height={80}
-            /> */}
             <h3 className="text-xl font-semibold">Custom AI Interaction</h3>
             <p className="text-sm text-[#424242] dark:text-[#cfd8dc]">
               Interact with our custom LLM to receive personalized advice and strategies for improving focus.
             </p>
           </div>
           <div className="flex flex-col items-center gap-4">
-            {/* <Image
-              src="/assets/magic_icon.png"
-              alt="Magic Icon"
-              width={80}
-              height={80}
-            /> */}
             <h3 className="text-xl font-semibold">Tailored Solutions</h3>
             <p className="text-sm text-[#424242] dark:text-[#cfd8dc]">
               Discover tools and resources designed to help you stay organized and productive.
