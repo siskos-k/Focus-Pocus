@@ -7,7 +7,6 @@ export default function GeminiChat() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Load quiz data on first render
   useEffect(() => {
     const stored = localStorage.getItem("adhd_quiz_data");
 
@@ -20,9 +19,8 @@ export default function GeminiChat() {
       const firstUserMessage = {
         role: "user",
         content: `
-You are a helpful assistant that analyzes ADHD self-report results.
-Based on the following answers, provide a non-clinical interpretation, and ask 1–3 follow-up questions if relevant.
-Be friendly and supportive.
+ou are a helpful assistant specialized in psychology. The user has completed an ADHD self-report (ASRS). Analyze their answers and do the following: (1) If certain symptom areas are very pronounced, ask 2-3 follow-up questions to clarify their experience. (2) Then provide a concise summary of the results, including which symptoms are most prominent and a non-clinical estimate of ADHD likelihood. Be empathetic and informative, and avoid making a medical diagnosis
+Assume your response here will be the response in a chat with the user. So if you actually have follow ups, thank them and ask one question at a time,
 
 Here are my quiz results:
 ${formatted}
@@ -64,32 +62,40 @@ ${formatted}
   };
 
   return (
-    <div className="min-h-screen p-6 flex flex-col items-center justify-between bg-[#f5faff] dark:bg-[#1a1a1a] text-[#2d2d2d] dark:text-white">
-      <div className="w-full max-w-2xl flex flex-col gap-4">
+    <div className="min-h-screen bg-[#f5faff] text-[#2d2d2d] p-6 flex flex-col items-center">
+      <div className="w-full max-w-2xl flex flex-col gap-6">
         <h1 className="text-2xl font-bold text-center text-[#21a0ac]">Your ADHD Chat Summary</h1>
-        <div className="flex flex-col gap-2 bg-white dark:bg-[#2c2c2c] p-4 rounded-lg shadow-md overflow-y-auto max-h-[60vh]">
+
+        <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 overflow-y-auto max-h-[65vh] flex flex-col gap-4">
           {messages.map((msg, i) => (
             <div
               key={i}
-              className={`p-2 rounded ${
-                msg.role === "user" ? "bg-[#e3f2fd] self-end" : "bg-[#d0f0f4] self-start"
+              className={`p-3 rounded-md w-fit max-w-full whitespace-pre-wrap ${
+                msg.role === "user"
+                  ? "ml-auto bg-[#e3f2fd] text-right"
+                  : "mr-auto bg-[#e0f7fa] text-left"
               }`}
             >
-              <p><strong>{msg.role === "user" ? "You" : "Gemini"}:</strong> {msg.content}</p>
+              <p className="text-sm">
+                <strong>{msg.role === "user" ? "You" : "Gemini"}:</strong> {msg.content}
+              </p>
             </div>
           ))}
-          {loading && <p className="italic text-sm text-gray-500">Gemini is thinking...</p>}
+          {loading && (
+            <div className="text-sm italic text-gray-500">Gemini is thinking...</div>
+          )}
         </div>
-        <div className="flex gap-2 mt-4">
+
+        <div className="flex gap-2 mt-2">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-grow px-4 py-2 rounded-full border border-gray-300 focus:outline-none"
+            className="flex-grow px-4 py-2 rounded-full border border-gray-300 focus:outline-none shadow-sm"
             placeholder="Type a message..."
           />
           <button
             onClick={handleSend}
-            className="bg-[#21a0ac] hover:bg-[#004d40] text-white px-4 py-2 rounded-full font-medium"
+            className="bg-[#21a0ac] hover:bg-[#00796b] text-white px-6 py-2 rounded-full font-medium transition"
           >
             Send
           </button>
