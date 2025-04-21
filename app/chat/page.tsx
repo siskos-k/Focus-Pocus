@@ -16,19 +16,19 @@ export default function GeminiChat() {
         .map((item: any, index: number) => `${index + 1}. ${item.question} — Answer: ${item.answer}`)
         .join("\n");
 
-      const firstUserMessage = {
+      const firstMessage = {
         role: "user",
         content: `
-ou are a helpful assistant specialized in psychology. The user has completed an ADHD self-report (ASRS). Analyze their answers and do the following: (1) If certain symptom areas are very pronounced, ask 2-3 follow-up questions to clarify their experience. (2) Then provide a concise summary of the results, including which symptoms are most prominent and a non-clinical estimate of ADHD likelihood. Be empathetic and informative, and avoid making a medical diagnosis
-Assume your response here will be the response in a chat with the user. So if you actually have follow ups, thank them and ask one question at a time,
+You are a helpful assistant specialized in psychology. The user has completed an ADHD self-report (ASRS). Analyze their answers and do the following: (1) If certain symptom areas are very pronounced, ask 2-3 follow-up questions to clarify their experience. (2) Then provide a concise summary of the results, including which symptoms are most prominent and a non-clinical estimate of ADHD likelihood. Be empathetic and informative, and avoid making a medical diagnosis.
+Assume your response here will be the response in a chat with the user. So if you actually have follow ups, thank them and ask one question at a time.
 
 Here are my quiz results:
 ${formatted}
         `
       };
 
-      setMessages([firstUserMessage]);
-      sendToGemini([firstUserMessage]);
+      setMessages([firstMessage]);
+      sendToGemini([firstMessage]);
     }
   }, []);
 
@@ -67,7 +67,7 @@ ${formatted}
         <h1 className="text-2xl font-bold text-center text-[#21a0ac]">Your ADHD Chat Summary</h1>
 
         <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-4 overflow-y-auto max-h-[65vh] flex flex-col gap-4">
-          {messages.map((msg, i) => (
+          {messages.slice(1).map((msg, i) => (
             <div
               key={i}
               className={`p-3 rounded-md w-fit max-w-full whitespace-pre-wrap ${
