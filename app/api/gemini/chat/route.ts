@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     .join("\n");
 
   try {
-    const model = genAI.getGenerativeModel({ model: "models/gemini-1.5-pro-latest" });
+    const model = genAI.getGenerativeModel({ model: "models/learnlm-1.5-pro-experimental" });
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

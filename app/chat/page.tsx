@@ -20,9 +20,10 @@ export default function GeminiChat() {
         role: "user",
         content: `
 You are a helpful assistant specialized in psychology. The user has completed an ADHD self-report (ASRS). Analyze their answers and do the following: (1) If certain symptom areas are very pronounced, ask 2-3 follow-up questions to clarify their experience. (2) Then provide a concise summary of the results, including which symptoms are most prominent and a non-clinical estimate of ADHD likelihood. Be empathetic and informative, and avoid making a medical diagnosis.
-Assume your response here will be the response in a chat with the user. So if you actually have follow ups, thank them and ask one question at a time.
+You are now in a conversation with the user. Your job is to respond only when the user sends a message. Never create responses for the user or summarize what the user might say. Just wait, respond kindly, and ask one follow-up at a time if needed. Be conversational and helpful.
 
-Here are my quiz results:
+Here are their quiz responses:
+
 ${formatted}
         `
       };
