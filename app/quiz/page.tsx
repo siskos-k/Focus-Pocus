@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 const questions = [
@@ -33,9 +34,12 @@ const answerOptions = [
 ];
 
 export default function QuizPage() {
+  const [quizStarted, setQuizStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [responses, setResponses] = useState<any[]>([]);
   const [isFinished, setIsFinished] = useState(false);
+
+  const router = useRouter();
 
   const handleAnswer = (label: string, score: number) => {
     const response = {
@@ -53,10 +57,15 @@ export default function QuizPage() {
     }
   };
 
+  const handleViewChat = () => {
+    localStorage.setItem("adhd_quiz_data", JSON.stringify(responses));
+    router.push("/chat");
+  };
+
   const totalScore = responses.reduce((sum, r) => sum + r.score, 0);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-[#e3f2fd] to-[#f5faff] dark:from-[#1a237e] dark:to-[#1a1a1a] text-[#2d2d2d] dark:text-[#f5faff] font-[family-name:var(--font-geist-sans)]">
+    <div className="min-h-screen flex flex-col items-center justify-between bg-gradient-to-b from-[#e3f2fd] to-[#f5faff] text-[#2d2d2d] font-[family-name:var(--font-geist-sans)]">
       
       {/* Header */}
       <header className="w-full flex justify-center py-8">
@@ -70,32 +79,41 @@ export default function QuizPage() {
         />
       </header>
 
+      {/* Main content */}
       <main className="flex flex-col items-center text-center px-8 py-8 sm:py-16 gap-6 w-full max-w-3xl">
-        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#21a0ac] dark:text-[#4db6ac]">
-          Take the quiz
-        </h1>
+        {!quizStarted ? (
+          <>
+            <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#21a0ac]">
+              Take the quiz
+            </h1>
 
-        <p className="text-base sm:text-lg text-[#424242] dark:text-[#cfd8dc]">
-          Your responses to this quiz will not only give you insights based on the official ASRS scale, 
-          but also power a personalized AI experience. Focus Pocus will use your answers to provide 
-          tailored focus strategies, progress tracking, and supportive tools to help you thrive with (or without) ADHD.
-        </p>
+            <p className="text-base sm:text-lg text-[#424242]">
+              Your responses to this quiz will not only give you insights based on the official ASRS scale, 
+              but also power a personalized AI experience. Focus Pocus will use your answers to provide 
+              tailored focus strategies, progress tracking, and supportive tools to help you thrive with (or without) ADHD.
+            </p>
 
-        <h2 className="text-2xl sm:text-3xl font-bold text-[#21a0ac] dark:text-[#4db6ac]">
-          ADHD Self-Check (ASRS)
-        </h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#21a0ac]">
+              ADHD Self-Check (ASRS)
+            </h2>
 
-        <p className="text-base sm:text-lg text-[#424242] dark:text-[#cfd8dc]">
-          This quiz is based on the <strong>ASRS (Adult ADHD Self-Report Scale)</strong>, a clinically validated tool developed by the World Health Organization. It’s not a formal diagnosis—but it can help you understand your attention patterns and decide if further support might be helpful.
-        </p>
+            <p className="text-base sm:text-lg text-[#424242]">
+              This quiz is based on the <strong>ASRS (Adult ADHD Self-Report Scale)</strong>, a clinically validated tool developed by the World Health Organization.
+              It’s not a formal diagnosis—but it can help you understand your attention patterns and decide if further support might be helpful.
+            </p>
 
-        <p className="text-sm mt-2 text-[#757575] dark:text-[#b0bec5]">
-          ⏳ 18 quick questions – takes under 10 minutes
-        </p>
-
-        {/* Quiz Flow */}
-        {!isFinished ? (
-          <div className="mt-8 w-full">
+            <p className="text-sm mt-2 text-[#757575]">
+              ⏳ 18 quick questions – takes under 10 minutes
+            </p>
+            <button
+              className="mt-6 rounded-full bg-[#21a0ac] text-white px-6 py-3 text-lg font-medium shadow-md hover:bg-[#004d40] transition-transform transform hover:scale-105"
+              onClick={() => setQuizStarted(true)}
+            >
+              Start ASRS Quiz
+            </button>
+          </>
+        ) : !isFinished ? (
+          <div className="w-full mt-4">
             <h3 className="text-xl font-semibold mb-4">
               Question {currentQuestion + 1} of {questions.length}
             </h3>
@@ -113,17 +131,23 @@ export default function QuizPage() {
             </div>
           </div>
         ) : (
-          <div className="mt-10 w-full">
-            <h3 className="text-2xl font-bold text-[#21a0ac] dark:text-[#4db6ac]">Quiz Complete 🎉</h3>
-            <p className="text-lg mt-4">
+          <div className="mt-10 w-full flex flex-col items-center gap-6">
+            <h3 className="text-2xl font-bold text-[#21a0ac]">Quiz Complete 🎉</h3>
+            <p className="text-lg">
               Total Score: <strong>{totalScore}</strong> out of {questions.length * 4}
             </p>
-            <p className="mt-2 text-sm text-[#757575] dark:text-[#b0bec5]">
+            <p className="text-sm text-[#757575]">
               Higher scores may indicate more frequent ADHD-related symptoms.
             </p>
-            <pre className="mt-6 p-4 bg-gray-100 dark:bg-[#1e1e1e] text-sm max-w-full overflow-auto rounded-lg text-left">
+            <pre className="mt-4 p-4 bg-gray-100 text-sm max-w-full overflow-auto rounded-lg text-left">
               {JSON.stringify(responses, null, 2)}
             </pre>
+            <button
+              className="rounded-full bg-[#21a0ac] text-white px-6 py-3 text-lg font-medium shadow-md hover:bg-[#004d40] transition-transform transform hover:scale-105"
+              onClick={handleViewChat}
+            >
+              Continue to AI Chat →
+            </button>
           </div>
         )}
       </main>
@@ -132,7 +156,7 @@ export default function QuizPage() {
       <footer className="py-6 text-center">
         <a
           href="/"
-          className="text-[#21a0ac] dark:text-[#4db6ac] hover:underline text-sm"
+          className="text-[#21a0ac] hover:underline text-sm"
         >
           ← Back to Home
         </a>
